@@ -24,8 +24,8 @@ def load_dir(path) :
         images.append(load_image(path + '/' + img_name))
     return images
 
-# normalize according to tile size
 def adjust_mouse_pos(coords : tuple) :
+    """ Given raw mouse coordinates in a windew, return their tile position """
     adjusted_coords = (
         math.floor( (coords[0]) / (TILE_SIZE * WIN_SCALE) ), 
         math.floor( (coords[1]) / (TILE_SIZE * WIN_SCALE) )
@@ -82,15 +82,23 @@ WIN_WIDTH = canvas_width + palette_width
 
 WIN_HEIGHT = Y_TILES * TILE_SIZE
 
-# HELPER DATA ============================================
-display_window = pygame.display.set_mode((WIN_WIDTH * WIN_SCALE, WIN_HEIGHT * WIN_SCALE), 0, 32)
-raw_window = pygame.Surface((WIN_WIDTH,WIN_HEIGHT))
+# =============================================================================
+# Global app data
+# =============================================================================
+display_window  = pygame.display.set_mode((WIN_WIDTH * WIN_SCALE, WIN_HEIGHT * WIN_SCALE), 0, 32)
+raw_window      = pygame.Surface((WIN_WIDTH,WIN_HEIGHT))
 
-canvas_rect = pygame.Rect(0,0, (canvas_width) * WIN_SCALE, WIN_HEIGHT * WIN_SCALE)
-subsurf = display_window.subsurface(canvas_rect)
+# Subset of window dedicated to drawable canvas
+canvas_rect     = pygame.Rect(0,0, (canvas_width) * WIN_SCALE, WIN_HEIGHT * WIN_SCALE)
+canvas_subsurf  = display_window.subsurface(canvas_rect)
 
-draw_grid = False
+# App state flags
+# TODO: store in struct?
+g_draw_grid = False
+g_painting  = False
+g_erasing   = False
 
+# Grid offset TODO: name this better
 x_offset = 0
 y_offset = 0
 
@@ -102,8 +110,6 @@ curr_brush_value = -1
 canvas = {
     # tile coordinates : tile type in coord
 }
-painting = False
-erasing = False
 # IM PRETTY SURE CANVAS BUFFER ACTS AS THE IN-BETWEEN FOR WHEN WE'RE HOLDING THE MOUSE
 # CLICK DOWN TO DRAW SOMETHING
 canvas_buffer = {}
