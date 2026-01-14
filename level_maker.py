@@ -3,27 +3,14 @@ from textbox import *
 user_polling = True
 playing = True
 
-# tbox = Textbox((40, 6))
-# tbox.open()
-# tbox.print("This is an example query")
-# tbox.multiprint(
-#     "This is an example of a query",
-#     "that could span multiple lines",
-#     "though I'm not sure if it's necessary if text wrapping is going be automatic"
-# )
-# # I'd like for the polling to be always on the bottom line and things get pushed up as you enter them
-# # In other words, the bottom line will always be reserved for user input
-# tbox.get()
-# tbox.close()
-# # QUESTION : how are we going to get that data from the textbox over to the main program
-
 # rendering issue is fixed by 1) not clearing the on screen text array every time
 # 2) taking the commands outside the function, and anything inside placing inside of a conditional
 
+# =============================================================================
+# Poll for params
+# =============================================================================
+
 tbox = Textbox(40, 20)
-tbox.text_print("The five boxing wizards jump quickly. And this sentence will cause some overflow in the console.")
-tbox.text_print("The five boxing wizards jump quickly.")
-tbox.text_print("The five boxing wizards jump quickly.")
 tbox.text_print("The five boxing wizards jump quickly.")
 while user_polling :
     for event in pygame.event.get() :
@@ -32,9 +19,6 @@ while user_polling :
         
         if event.type == KEYDOWN :
             tbox.handle_type_event(event)
-
-    # i just need the contents of on_screen_text to be rendered every fram
-    # what i dont need is for it to necessarily get updated every frame
 
     tbox.render()
     
@@ -69,8 +53,8 @@ while playing:
             if event.key == K_e :
                 # Export the current contents of the canvas to JSON
 
-                # Python types that map to JSON keys must be str, int, float, 
-                # bool or None, only need to figure out how to map to one of those types
+                # Python types that map to JSON keys must be str, int, float, bool
+                # or None, only need to figure out how to map to one of those types
                 # https://stackoverflow.com/questions/56403013/how-to-save-the-dictionary-that-have-tuple-keys
                 # ISSUE WITH TUPLE KEYS ^^
                 # better: https://stackoverflow.com/questions/12337583/saving-dictionary-whose-keys-are-tuples-with-json-python/12337657#12337657 

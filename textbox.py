@@ -12,6 +12,11 @@ from pygame.locals import *
 # por que no los dos
     # but for this I definitely want it in its own window before the program runs
 class Textbox :
+    """ Textbox of given dimensions - windowed or nested
+
+    Attributes:
+        
+    """
     def __init__(self, line_length : int, num_lines : int) :
         win_scale   = 6
         char_size   = 4
@@ -32,11 +37,16 @@ class Textbox :
         self.cursor         = pygame.Rect(0, (win_height - char_size - 1), char_size, char_size)
         self.typed_text_raw = ''
 
+        # I can probably play with these to condition if it's windowed or part
+        # of an existing window
         self.display_window     = pygame.display.set_mode((win_width * win_scale, win_height * win_scale), 0, 32)
         self.raw_window         = pygame.Surface((win_width, win_height))
 
     # pulled out into it's own function so that we can pop at the end and make space
     def __update_onscreen_text(self, images : list) -> None :
+        """
+
+        """
         self.on_screen_text.append(images)
         if len(self.on_screen_text) > self.num_lines :
             # we're gonna try just popping the last one but this might need to
@@ -44,6 +54,9 @@ class Textbox :
             self.on_screen_text.pop(0)
 
     def __text_to_img(self, text : str, rgb : tuple = None) -> list:
+        """
+
+        """
         def color_surface(surface : pygame.Surface, rgb : tuple = None) :
             arr = pygame.surfarray.pixels3d(surface)
             arr[:,:,0] = rgb[0]
@@ -72,9 +85,15 @@ class Textbox :
         return sentence
 
     # TODO: WHAT ABOUT RETURN KEY
-    def handle_type_event(self, event : pygame.event) :
-        # if a valid key was typed, add it to the typed_text_raw field
-        char = pygame.key.name(event.key) 
+    def handle_type_event(self, t_event : pygame.event) :
+        """ Add contents of event key to typed_text_raw, update cursor
+
+        Args:
+            t_event
+                Pygame event which may contain a keypress
+
+        """
+        char = pygame.key.name(t_event.key) 
         if not char.isalnum() : return 
 
         if char == 'space' :
@@ -98,6 +117,9 @@ class Textbox :
     # MAYBE TODO: COLOR TEXT OR PARTS OF TEXT
     # TODO: add the >  in the new line of text
     def text_print(self, text : str, color : tuple = None) :
+        """
+
+        """
         if len(text) > self.line_length :
             num_chunks = math.ceil(len(text) / self.line_length)
             chunk_size = self.line_length
@@ -110,6 +132,9 @@ class Textbox :
             self.__update_onscreen_text(imgs)
 
     def render(self) :
+        """
+
+        """
         self.raw_window.fill((0,0,0)) # might need to go in outer loop
 
         # blit console text
@@ -132,7 +157,6 @@ class Textbox :
         scaled_window = pygame.transform.scale(self.raw_window, self.display_window.get_size())
         self.display_window.blit(scaled_window, (0,0))
         pygame.display.update()
-
 
 
     def close(self) :
