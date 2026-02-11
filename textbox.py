@@ -1,6 +1,18 @@
+""" Import a textbox utility
+
+Create a textbox of a given char,lines size
+
+Usage:
+    tbox = Textbox(40,20)
+    tbox.text_print("The fix boxing wizards jump quickly.")
+    while true :
+        tbox.render()
+    tbox.close()
+"""
+
 import pygame, sys, random, os, math, json
-clock = pygame.time.Clock()
 from pygame.locals import *
+clock = pygame.time.Clock()
 # rethink imports - im doing all of this because i want the class/file to be 
 # copy pasteable 
 
@@ -17,6 +29,9 @@ class Textbox :
     Attributes:
         
     """
+    alnum_chars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9', ' ', '.']
+    special_chars = [' ', '.', ',', '>', '<']
+
     def __init__(self, line_length : int, num_lines : int) :
         win_scale   = 6
         char_size   = 4
@@ -53,20 +68,23 @@ class Textbox :
             # be a for loop for all extra ones
             self.on_screen_text.pop(0)
 
-    def __text_to_img(self, text : str, rgb : tuple = None) -> list:
+    def __text_to_img(self, t_text : str, t_rgb : tuple = None) -> list:
         """
-
+            
+            Args:
+                t_text
+                    
+                t_rgb
+                    If provided, color to apply to surface
         """
-        def color_surface(surface : pygame.Surface, rgb : tuple = None) :
+        def color_surface(surface : pygame.Surface, t_rgb : tuple = None) :
             arr = pygame.surfarray.pixels3d(surface)
-            arr[:,:,0] = rgb[0]
-            arr[:,:,1] = rgb[1]
-            arr[:,:,2] = rgb[2]
+            arr[:,:,0] = t_rgb[0]
+            arr[:,:,1] = t_rgb[1]
+            arr[:,:,2] = t_rgb[2]
         
-        alnum_chars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9', ' ', '.']
-        special_chars = [' ', '.', ',', '>', '<']
         # create a list of pygame surfaces, each of which is a letter in the surface
-        utext = text.upper()
+        utext = t_text.upper()
         sentence = []
 
         for c in utext :
@@ -77,7 +95,7 @@ class Textbox :
                 # consolidate these lines
                 letter.convert_alpha()
                 colored_letter = letter.copy()
-                color_surface(colored_letter, rgb)
+                color_surface(colored_letter, t_rgb)
                 sentence.append(colored_letter)
             else :
                 sentence.append(letter)
