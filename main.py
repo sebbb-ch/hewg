@@ -113,9 +113,12 @@ while playing:
                 # Toggle grid drawing
                 app.show_grid = not app.show_grid
             if event.key == K_e :
-                app.show_grid = False
-                pass
                 # Export the current contents of the canvas to JSON
+                app.show_grid = False
+                with open('export.json', "w") as f:
+                    json.dump(app.canvas, f, indent=4, sort_keys=True)
+
+                print('Map exported')
     
 
         # Handle mouse clicks
