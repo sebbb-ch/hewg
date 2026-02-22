@@ -1,21 +1,10 @@
-# ========================================================
-# gameboy resolution is 160 x 144 with 16 x 16 tiles
-# ========================================================
-import pygame, sys, random, os, math, json
+# External imports
+import math
+
+# Internal imports
+from shared_utils import *
+
 clock = pygame.time.Clock()
-from pygame.locals import *
-
-BASE_PATH = './'
-def load_image(path):
-    img = pygame.image.load(BASE_PATH + path).convert()
-    img.set_colorkey((0, 0, 0))
-    return img
-
-def load_dir(path) :
-    images = []
-    for img_name in sorted(os.listdir(BASE_PATH + path)):
-        images.append(load_image(path + '/' + img_name))
-    return images
 
 def window_scaled_to_canvas_tile(t_raw_coordinates: tuple, t_scaled_tile_size : int) :
     """ Given raw mouse coordinates in a window, return their tile position
