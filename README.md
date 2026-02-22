@@ -3,7 +3,7 @@
 
 > *"You're a new face. No matter. Lay out your arms. Let's get smithing."*
 
-![Hammer time](./assets/hammer.png)
+<img src="./assets/hammer.png" alt="Hammer time" width="300"/>
 
 A collection of tools I've made to help with general development.
 
